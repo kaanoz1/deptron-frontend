@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+    # sql:
+    #   image: mcr.microsoft.com/mssql/server:2022-latest
+    #   container_name: db
+    #   environment:
+    #     ACCEPT_EULA: "Y"
+    #     SA_PASSWORD: "Deptron1974"
+    #     MSSQL_PID: "Express"
+    #   ports:
+    #     - "1433:1433"
+    #   volumes:
+    #     - deptron-db:/var/opt/mssql
+    #   healthcheck:
+    #     test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/1433' || exit 1"]
+    #     interval: 5s
+    #     timeout: 5s
+    #     retries: 30
+    #   restart: unless-stopped
+    #   networks: [deptron-net]
+
+    backend:
+        build:
+            context: /home/prag/RiderProjects/deptron
+            dockerfile: Dockerfile
+        container_name: backend
+        ports:
+            - "5000:5000"
+            - "1883:1883"
+
+    frontend:
+        build:
+            args:
+                NEXT_PUBLIC_API_BASE_URL: "http://127.0.0.1:5000"
+            context: /home/prag/WebstormProjects/robot-frontend
+            dockerfile: Dockerfile
+        container_name: frontend
+        environment:
+            NODE_ENV: production
+        ports:
+            - "3000:3000"
+        depends_on:
+            - backend
+# volumes:
+#   deptron-db:
+#     external: true
+
+# networks:
+#   deptron-net:
+#     driver: bridge

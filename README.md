@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Robot Frontend
 
-## Getting Started
+## How to Run
 
-First, run the development server:
+1. **Edit `docker-compose.yml`:**  
+   Ensure the `docker-compose.yml` file points to the correct Dockerfiles for both the frontend and backend. Update the `build.context` and `dockerfile` paths as needed.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. **Start the Application:**  
+   Run the following command to build and start all services:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    ```sh
+    docker compose -p deptron -f ./path/to/docker/compose/docker-compose.yml up -d --build
+    ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. **Access the Frontend:**  
+   Open your browser and go to [http://localhost:3000](http://localhost:3000).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Features
 
-## Learn More
+- **MQTT Client Connection Notifications:**  
+  Toast notifications will appear at the bottom-right of the screen whenever an MQTT client connects or disconnects from the broker. The runtime will automatically start on connect and reset on disconnect.
 
-To learn more about Next.js, take a look at the following resources:
+- **Console Output:**  
+  Check logs and outputs using Docker Desktop for troubleshooting and monitoring. Every significant actions is announced to user via whether console output or toast or docker console output.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Command System
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+All commands are sent to the MQTT client via the `broker/commands` topic. Possible string outputs through this topic are:
 
-## Deploy on Vercel
+- `Forward`
+- `Backward`
+- `Left`
+- `Right`
+- `Pause`
+- `Stop`
+- `Release`
+- `Take`
+- `Charge`
+- The **Başlat** button sends the `Forward` command to the MQTT client.
+- The **Durdur** button sends the `Stop` command to the MQTT client.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Important Notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Mosquitto is NOT used.**  
+  Use the provided Python scripts for MQTT functionality instead.
+
+- **Speed and Charge Updates:**
+    - Send speed to the MQTT topic `client/speed`. (in unit of meter/second)
+    - Send charge percentage to the MQTT topic `client/charge`.  
+      The backend will automatically forward these values to the frontend. Values must be numbers or strings.
+
+---
+
+## Command List
+
+The following commands are available and can be sent to the robot:
+
+- **Forward**: Move the robot forward.
+- **Backward**: Move the robot backward.
+- **Left**: Turn the robot left.
+- **Right**: Turn the robot right.
+- **Pause**: Pause the robot's movement.
+- **Stop**: Stop the robot.
+- **Release**: Release the robot (custom action).
+- **Take**: Take action (custom action).
+- **Charge**: Start charging.
+
+You can add commands using the UI dialog, and remove them as needed. Use the "Başlat" button to send the `Forward` command, and the "Durdur" button to send the `Stop` command.
+
+---
