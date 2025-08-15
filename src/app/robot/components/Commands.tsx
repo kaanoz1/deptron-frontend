@@ -35,6 +35,11 @@ import { ReleaseCommand } from "@/classes/Command/Commands/RelaseCommand";
 import { TakeCommand } from "@/classes/Command/Commands/TakeCommand";
 import { PauseCommand } from "@/classes/Command/Commands/PauseCommand";
 import { ChargeCommand } from "@/classes/Command/Commands/ChargeCommand";
+import { TurnInPlaceRight } from "@/classes/Command/Commands/TurnInPlaceRight";
+import { TurnInPlaceLeft } from "@/classes/Command/Commands/TurnInPlaceLeft";
+import { CurveMinus } from "@/classes/Command/Commands/CurveMinus";
+import { CurveStraight } from "@/classes/Command/Commands/CurveStraigth";
+import { CurvePlus } from "@/classes/Command/Commands/CurvePlus";
 
 type Props = {
     connection: HubConnection;
@@ -183,4 +188,9 @@ const COMMANDS = [
     new ReleaseCommand(),
     new TakeCommand(),
     new ChargeCommand(),
+    new TurnInPlaceLeft(),
+    new TurnInPlaceRight(),
+    new CurveMinus(),
+    new CurvePlus(),
+    new CurveStraight(),
 ];

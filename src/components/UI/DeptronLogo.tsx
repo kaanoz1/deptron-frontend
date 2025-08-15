@@ -3,8 +3,10 @@
 import { FC } from "react";
 import DeptronSVG from "@/assets/svgs/deptron_logo.svg";
 
-const DeptronLogo: FC = () => {
-    return <DeptronSVG className="h-15 w-auto" />;
+type DeptronLogoProps = { className?: `h-${number}` };
+
+const DeptronLogo: FC<DeptronLogoProps> = ({ className }) => {
+    return <DeptronSVG className={`${className ?? "h-15"} w-auto`} />;
 };
 
 export default DeptronLogo;
