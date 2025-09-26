@@ -1,40 +1,42 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/UI/Navbar.tsx";
-import Footer from "@/components/UI/Footer";
-import { ReactQueryProvider } from "@/providers/ReactQueryProvider.tsx";
-import { Toaster } from "@/components/ui/sonner.tsx";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Providers from "@/components/Providers";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-
-const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
-    subsets: ["latin"],
-});
-
-export const metadata: Metadata = { title: "Deptron", description: "Robotics" };
+export const metadata: Metadata = {
+  title: "Deptron",
+  description: "Deptron Robotics",
+  icons: {
+    icon: [
+      {
+        media: "(prefers-color-scheme: light)",
+        url: "/deptron_logo.svg",
+        href: "/deptron_logo.svg",
+      },
+      {
+        media: "(prefers-color-scheme: dark)",
+        url: "/deptron_logo.svg",
+        href: "/deptron_logo.svg",
+      },
+    ],
+  },
+};
 
 export default function RootLayout({
-    children,
-}: Readonly<{ children: React.ReactNode }>) {
-    return (
-        <html lang="en">
-            <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-            >
-                <Toaster richColors closeButton />
-                <ReactQueryProvider>
-                    {/* <UserContextProvider> */}
-                    <Navbar />
-                    {children}
-                    <Footer />
-                    {/* </UserContextProvider> */}
-
-                    <ReactQueryDevtools />
-                </ReactQueryProvider>
-            </body>
-        </html>
-    );
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <Providers>
+          <Navbar />
+          {children}
+          <Footer />
+        </Providers>
+      </body>
+    </html>
+  );
 }
